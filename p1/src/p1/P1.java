@@ -34,22 +34,42 @@ public class P1 {
         
         java.util.Scanner scanner = new java.util.Scanner(System.in);
         
-        System.out.print("Enter the number of bugs initially in the farm: ");
-        int numOfInitialBugs = scanner.nextInt();
+//        System.out.print("Enter the number of bugs initially in the farm: ");
+//        int numOfInitialBugs = scanner.nextInt();
+//        
+//        System.out.print("Enter the number of bug moves: ");
+//        int numOfBugMoves = scanner.nextInt();
+//        
+//        System.out.print("Enter the upper bound for the x and y coord (1 - 99): ");
+//        int upperBound = scanner.nextInt();
+//        
+//        System.out.print("Enter the file name where results will be recorded: ");
+//        String outputFile = scanner.next();
         
-        System.out.print("Enter the number of bug moves: ");
-        int numOfBugMoves = scanner.nextInt();
         
-        System.out.print("Enter the upper bound for the x and y coord (1 - 99): ");
-        int upperBound = scanner.nextInt();
+        Bug b1 = new Bug();
+        Bug b2 = new Bug();
+        Bug b3 = new Bug();
         
-        System.out.print("Enter the file name where results will be recorded: ");
-        String outputFile = scanner.next();
+        b1.setBugCoordinates(1, 1);
+        b2.setBugCoordinates(1, 1);
+        b3.setBugCoordinates(2,2);
         
-        System.out.print(numOfInitialBugs);
-        System.out.print(numOfBugMoves);
-        System.out.print(upperBound);
-        System.out.print(outputFile);
+        boolean result1 = b1.equals(b2); // true
+        boolean result2 = b1.equals(b3); // false
+        
+        System.out.print("b1 == b2: " + result1 + "\n"); // true
+        System.out.print("b1 == b3: " + result2 + "\n"); // false
+        
+        int result3 = b1.compareTo(b2); // 0
+        int result4 = b3.compareTo(b2); // 1
+        int result5 = b1.compareTo(b3); // -1 
+        
+        System.out.print("Should be 0: " + result3 + "\n"); 
+        System.out.print("Should be 1: " + result4 + "\n");        
+        System.out.print("Should be -1: " + result5 + "\n"); 
+
+          
 
     }
 

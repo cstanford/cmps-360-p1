@@ -1,6 +1,8 @@
 
 package p1;
 
+import java.util.Objects;
+
 /**
  *
  * @author cxs0290
@@ -26,7 +28,7 @@ package p1;
 * 
  * 
  */
-public class Bug {
+public class Bug implements Comparable<Bug>{
     
     /**
      * Questions:
@@ -34,30 +36,77 @@ public class Bug {
      *  * 
      */
 
-    private int xCoord;
-
-    public int getXcoord() {
-        return xCoord;
+    public class BugCoordinates {
+        private int xCoord;
+        private int yCoord;
     }
 
-    public void setXCoord(int xCoord) {
-        this.xCoord = xCoord;
-    }
-    
-    
-    private int yCoord;
-
-    public int getYCoord() {
-        return yCoord;
-    }
-
-    public void setYCoord(int yCoord) {
-        this.yCoord = yCoord;
-    }
-    
-
+    BugCoordinates bugCoords;
     private int rangeLimit;
+    private String gender;
+    private boolean isSquashed;
+    
+    public Bug() { bugCoords = new BugCoordinates(); this.isSquashed = false; }
+    
+    public Bug(int xCoord, int yCoord, int rangeLimit, String gender) {
+        bugCoords = new BugCoordinates();
+        this.bugCoords.xCoord = xCoord;
+        this.bugCoords.yCoord = yCoord;
+        this.rangeLimit = rangeLimit;
+        this.gender = gender;
+        this.isSquashed = false;
+    }
+    
+    @Override
+    public int compareTo(Bug enemyBug) {
+     
+        if (this.bugCoords.xCoord > enemyBug.bugCoords.xCoord &&
+            this.bugCoords.yCoord > enemyBug.bugCoords.yCoord) {
+            return 1;
+        }
+        
+        if (this.bugCoords.xCoord == enemyBug.bugCoords.xCoord && 
+            this.bugCoords.yCoord == enemyBug.bugCoords.yCoord) {
+            return 0;
+        }
+     
+        return -1;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
 
+        if (obj == this) { return true; }
+        
+        if (!(obj instanceof Bug)) {
+            return false;
+        }
+        
+        Bug passedBug = (Bug) obj;
+        
+        return this.bugCoords.xCoord == passedBug.bugCoords.xCoord &&
+               this.bugCoords.yCoord == passedBug.bugCoords.yCoord;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 61 * hash + Objects.hashCode(this.bugCoords);
+        return hash;
+    }
+
+
+    
+    public BugCoordinates getBugCoordinates() {
+        return this.bugCoords;
+    }
+    
+    public void setBugCoordinates(int xCoord, int yCoord) {
+        this.bugCoords.xCoord = xCoord;
+        this.bugCoords.yCoord = yCoord;
+    }
+       
+    
     public int getRangeLimit() {
         return rangeLimit;
     }
@@ -65,8 +114,6 @@ public class Bug {
     public void setRangeLimit(int rangeLimit) {
         this.rangeLimit = rangeLimit;
     }
-    
-    private String gender;
 
     public String getGender() {
         return gender;
@@ -76,8 +123,6 @@ public class Bug {
         this.gender = gender;
     }
     
-    private boolean isSquashed = false;
-    
     public boolean checkPulse() {
         return this.isSquashed;
     }
@@ -86,7 +131,5 @@ public class Bug {
         this.isSquashed = true;
     }
     
-
-
     
 }
