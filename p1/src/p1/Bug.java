@@ -40,33 +40,37 @@ public class Bug implements Comparable<Bug>{
         private int xCoord;
         private int yCoord;
     }
-
-    BugCoordinates bugCoords;
+    
+    private int xCoord;
+    private int yCoord;
     private int rangeLimit;
     private String gender;
     private boolean isSquashed;
     
-    public Bug() { bugCoords = new BugCoordinates(); this.isSquashed = false; }
-    
-    public Bug(int xCoord, int yCoord, int rangeLimit, String gender) {
-        bugCoords = new BugCoordinates();
-        this.bugCoords.xCoord = xCoord;
-        this.bugCoords.yCoord = yCoord;
-        this.rangeLimit = rangeLimit;
-        this.gender = gender;
+    public Bug() { 
         this.isSquashed = false;
+        setGender();
+    }
+    
+    public Bug(int xCoord, int yCoord, int rangeLimit) {
+ 
+        this.xCoord = xCoord;
+        this.yCoord = yCoord;
+        this.rangeLimit = rangeLimit;
+        this.isSquashed = false;
+        setGender();
     }
     
     @Override
-    public int compareTo(Bug enemyBug) {
+    public int compareTo(Bug passedBug) {
      
-        if (this.bugCoords.xCoord > enemyBug.bugCoords.xCoord &&
-            this.bugCoords.yCoord > enemyBug.bugCoords.yCoord) {
+        if (this.xCoord > passedBug.xCoord &&
+            this.yCoord > passedBug.yCoord) {
             return 1;
         }
         
-        if (this.bugCoords.xCoord == enemyBug.bugCoords.xCoord && 
-            this.bugCoords.yCoord == enemyBug.bugCoords.yCoord) {
+        if (this.xCoord == passedBug.xCoord && 
+            this.yCoord == passedBug.yCoord) {
             return 0;
         }
      
@@ -84,28 +88,31 @@ public class Bug implements Comparable<Bug>{
         
         Bug passedBug = (Bug) obj;
         
-        return this.bugCoords.xCoord == passedBug.bugCoords.xCoord &&
-               this.bugCoords.yCoord == passedBug.bugCoords.yCoord;
+        return this.xCoord == passedBug.xCoord &&
+               this.yCoord == passedBug.yCoord;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 61 * hash + Objects.hashCode(this.bugCoords);
+        int hash = 5;
+        hash = 31 * hash + this.xCoord;
+        hash = 31 * hash + this.yCoord;
         return hash;
     }
 
-
     
-    public BugCoordinates getBugCoordinates() {
-        return this.bugCoords;
+    public int getXCoordinate() {
+        return this.xCoord;
+    }
+    
+    public int getYCoordinate() {
+        return this.yCoord;
     }
     
     public void setBugCoordinates(int xCoord, int yCoord) {
-        this.bugCoords.xCoord = xCoord;
-        this.bugCoords.yCoord = yCoord;
-    }
-       
+        this.xCoord = xCoord;
+        this.yCoord = yCoord;
+    }       
     
     public int getRangeLimit() {
         return rangeLimit;
@@ -119,8 +126,14 @@ public class Bug implements Comparable<Bug>{
         return gender;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    private void setGender() {
+        
+        int randInt = (int)(Math.random() * 2);
+        
+        if (randInt < 1){
+            this.gender = "Male";
+        } 
+        else { this.gender = "Female"; }
     }
     
     public boolean checkPulse() {

@@ -34,17 +34,20 @@ public class P1 {
         
         java.util.Scanner scanner = new java.util.Scanner(System.in);
         
-//        System.out.print("Enter the number of bugs initially in the farm: ");
-//        int numOfInitialBugs = scanner.nextInt();
-//        
-//        System.out.print("Enter the number of bug moves: ");
-//        int numOfBugMoves = scanner.nextInt();
-//        
-//        System.out.print("Enter the upper bound for the x and y coord (1 - 99): ");
-//        int upperBound = scanner.nextInt();
-//        
-//        System.out.print("Enter the file name where results will be recorded: ");
-//        String outputFile = scanner.next();
+        System.out.print("Enter the number of bugs initially in the farm: ");
+        int numOfInitialBugs = scanner.nextInt();
+        
+        System.out.print("Enter the number of bug moves: ");
+        int numOfBugMoves = scanner.nextInt();
+        
+        System.out.print("Enter the upper bound for the x coordinate (1 - 99): ");
+        int XCoordUpperBound = scanner.nextInt();
+
+        System.out.print("Enter the upper bound for the y coordinate (1 - 99): ");
+        int YCoordUpperBound = scanner.nextInt();
+        
+        System.out.print("Enter the file name where results will be recorded: ");
+        String outputFile = scanner.next();
         
         
         Bug b1 = new Bug();
@@ -68,6 +71,11 @@ public class P1 {
         System.out.print("Should be 0: " + result3 + "\n"); 
         System.out.print("Should be 1: " + result4 + "\n");        
         System.out.print("Should be -1: " + result5 + "\n"); 
+        
+        BugFarm mcdonaldsFarm = new BugFarm(numOfInitialBugs, numOfBugMoves, 
+            XCoordUpperBound, YCoordUpperBound);
+        
+        mcdonaldsFarm.displayBugStats();
 
           
 
