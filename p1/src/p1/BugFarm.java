@@ -79,6 +79,7 @@ public class BugFarm {
         while (turnNumber < this.numOfBugMoves){
             
             int limit = this.bugList.size();
+            int babysToMake = 0;
             
             for (int i = 0; i < limit - 1; i++){          
                 Bug bug1 = this.bugList.get(i);
@@ -86,16 +87,18 @@ public class BugFarm {
                 for (int k = i + 1; k < limit; k++){
                     Bug bug2 = this.bugList.get(k);
                     
-                    if (bug1.equals(bug2)){
-                      makeLoveOrWar(bug1, bug2);
+                    // Need to make insert checks for when a bug is dead!
+                    // We can use continue when a bug dies...
+                    
+                    if (bug1.equals(bug2)){  
+                        makeLoveOrWar(bug1, bug2);
                     }
                 }
             }
-            
+            makeLove(babysToMake);
             turnNumber++;
         }
-        //after, check for fight or mate conditions.
-        // be sure bug does not fight itself. 
+
     }
     
     public void moveBug(Bug bug) {
@@ -131,10 +134,13 @@ public class BugFarm {
     
     private void makeLoveOrWar(Bug bug1, Bug bug2){
         
+        // If the bug is dead, do nothing. 
+        if ((bug2.checkPulse())) { return; }
+        
         if (Objects.equals(bug1.getGender(), bug2.getGender())){
-             
             int duel = (int)((Math.random() * 2));
-            
+            System.out.print("\nTwo bugs fought to the death!");
+
             if (duel < 1) {
                 bug1.squashBug();
                 return;
@@ -144,6 +150,31 @@ public class BugFarm {
         } else {
             Bug babyBug = new Bug();
             this.bugList.add(babyBug);
+            System.out.print("\nBaby making time...!");
+        }
+        
+        
+    }
+    
+    private void makeWar(Bug bug1, Bug bug2) { 
+        
+        int duel = (int)((Math.random() * 2));
+        System.out.print("\nTwo bugs fought to the death!");
+
+        if (duel < 1) {
+            bug1.squashBug();
+            return;
+        } 
+        bug2.squashBug();
+    }
+    
+    private void makeLove(int babysToMake) {
+        
+        for(int i = 0; i < babysToMake; i++) {
+            Bug babyBug = new Bug();
+            this.bugList.add(babyBug);
+            System.out.print("\nBaby making time...!");
+
         }
     }
     

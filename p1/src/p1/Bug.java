@@ -80,7 +80,9 @@ public class Bug implements Comparable<Bug>{
     @Override
     public boolean equals(Object obj) {
 
-        if (obj == this) { return true; }
+        if (obj == this) { return false; } 
+        // We return false here to ensure that the bug does not attmept
+        // to fight or mate with itself when the simulatoin is ran. 
         
         if (!(obj instanceof Bug)) {
             return false;
