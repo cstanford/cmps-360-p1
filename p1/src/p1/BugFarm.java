@@ -41,7 +41,6 @@ public class BugFarm {
         this.bugList = new ArrayList<>();
         
         initBugFarm();
-        initSimulation();
         
     }
     
@@ -68,7 +67,7 @@ public class BugFarm {
         
     }
     
-    private void initSimulation() {
+    public void initSimulation() {
         
         this.bugList.stream().forEach((bug) -> {
             moveBug(bug);
@@ -79,29 +78,27 @@ public class BugFarm {
         while (turnNumber < this.numOfBugMoves){
             
             int limit = this.bugList.size();
-            int babysToMake = 0;
             
             for (int i = 0; i < limit - 1; i++){          
                 Bug bug1 = this.bugList.get(i);
                 
+                // If the bug is dead, do nothing. 
+                if (!(bug1.checkPulse())) { continue; }
+ 
                 for (int k = i + 1; k < limit; k++){
                     Bug bug2 = this.bugList.get(k);
-                    
-                    // Need to make insert checks for when a bug is dead!
-                    // We can use continue when a bug dies...
                     
                     if (bug1.equals(bug2)){  
                         makeLoveOrWar(bug1, bug2);
                     }
                 }
             }
-            makeLove(babysToMake);
             turnNumber++;
         }
 
     }
     
-    public void moveBug(Bug bug) {
+    private void moveBug(Bug bug) {
         //TODO: make sure bugs stay in range
         
         int xCoord = bug.getXCoordinate();
@@ -110,32 +107,47 @@ public class BugFarm {
         int diceRoll = (int)((Math.random() * 9));
         
         switch (diceRoll) {
-            case 8: bug.setBugCoordinates(xCoord + 1, yCoord + 1);
+            case 8: xCoord += 1;
+                    yCoord -= 1;
                     break;
-            case 7: bug.setBugCoordinates(xCoord , yCoord - 1);
+            case 7: yCoord -= 1;
                     break;
-            case 6: bug.setBugCoordinates(xCoord - 1, yCoord - 1);
+            case 6: xCoord -= 1;
+                    yCoord -= 1;
                     break;             
-            case 5: bug.setBugCoordinates(xCoord + 1, yCoord);
+            case 5: xCoord += 1;
                     break;
-            case 4: bug.setBugCoordinates(xCoord - 1, yCoord);
+            case 4: xCoord -= 1;
                     break;
-            case 3: bug.setBugCoordinates(xCoord + 1, yCoord + 1);
+            case 3: xCoord += 1;
+                    yCoord += 1;
                     break;
-            case 2: bug.setBugCoordinates(xCoord, yCoord + 1);
+            case 2: yCoord += 1;
                     break;
-            case 1: bug.setBugCoordinates(xCoord - 1, yCoord + 1);
+            case 1: xCoord -= 1;
+                    yCoord += 1;
                     break;
             default: // Bug stays in place. Do nothing.
                     break;  
         }
-           
+        
+        updateCoordinates(bug, xCoord, yCoord);
+  
+    }
+    
+    private void updateCoordinates(Bug bug, int newXCoord, int newYCoord) {
+        
+        if(newXCoord <= this.xCoordUpperBound && newYCoord <= this.yCoordUpperBound){
+            bug.setBugCoordinates(newXCoord, newYCoord);
+            // If the bug attemps to move out of bounds, it will simply stay in 
+            // place.
+        }
     }
     
     private void makeLoveOrWar(Bug bug1, Bug bug2){
         
         // If the bug is dead, do nothing. 
-        if ((bug2.checkPulse())) { return; }
+        if (!(bug2.checkPulse())) { return; }
         
         if (Objects.equals(bug1.getGender(), bug2.getGender())){
             int duel = (int)((Math.random() * 2));
@@ -156,40 +168,53 @@ public class BugFarm {
         
     }
     
-    private void makeWar(Bug bug1, Bug bug2) { 
-        
-        int duel = (int)((Math.random() * 2));
-        System.out.print("\nTwo bugs fought to the death!");
-
-        if (duel < 1) {
-            bug1.squashBug();
-            return;
-        } 
-        bug2.squashBug();
-    }
-    
-    private void makeLove(int babysToMake) {
-        
-        for(int i = 0; i < babysToMake; i++) {
-            Bug babyBug = new Bug();
-            this.bugList.add(babyBug);
-            System.out.print("\nBaby making time...!");
-
-        }
-    }
-    
-    
-    
     public void displayBugStats() {
         
-        System.out.print("\nBug Farm Stats: ");
+        int totalBugs, totalMaleBugs, totalFemaleBugs;
+        int totalLivingBugs = 0, totalDeadBugs = 0;
+        int malesAlive = 0, femalesAlive = 0;
+        int malesDead = 0, femalesDead = 0;
+
+        for(Bug b : this.bugList){
+            
+            if(b.checkPulse()) {
+                totalLivingBugs += 1;
+                
+                if (Objects.equals("Male", b.getGender())){
+                    malesAlive += 1;
+                } else { femalesAlive += 1; }
+            }
+            else {
+                totalDeadBugs += 1;
+                
+                if (Objects.equals("Male", b.getGender())) {
+                    malesDead += 1;
+                } else { femalesDead += 1; }
+            } 
+        }
+        
+        totalMaleBugs = (malesAlive + malesDead);
+        totalFemaleBugs = (femalesAlive + femalesDead);
+        totalBugs = (totalMaleBugs + totalFemaleBugs);
+        
+        System.out.print("\n\nBug Farm Stats: ");
         System.out.print("\nInititial number of Bugs: " + this.numOfInitialBugs);
         System.out.print("\nInitial bugs of type male: " + this.initialMaleBugs);
         System.out.print("\nInitial bugs of type female: " + this.initialFemaleBugs);
         
-        System.out.print("\n\nAfter simulation results: ");
-        
-       
+        System.out.print("\n\nAfter simulation results: "); 
+        System.out.print("\nTotal Bugs: " + totalBugs);
+        System.out.print("\nAlive Bugs: " + totalLivingBugs);
+        System.out.print("\nDead Bugs: " + totalDeadBugs);
+        System.out.print("\nMale Bugs: " + totalMaleBugs);
+        System.out.print("\nMales Alive: " + malesAlive);
+        System.out.print("\nMales Dead: " + malesDead);
+        System.out.print("\nFemale Bugs: " + totalFemaleBugs);
+        System.out.print("\nFemales Alive: " + femalesAlive);
+        System.out.print("\nFemales Dead: " + femalesDead);
+        System.out.print("\n\n");
+                
+ 
     }
 
 }

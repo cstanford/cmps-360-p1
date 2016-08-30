@@ -1,8 +1,6 @@
 
 package p1;
 
-import java.util.Objects;
-
 /**
  *
  * @author cxs0290
@@ -30,11 +28,6 @@ import java.util.Objects;
  */
 public class Bug implements Comparable<Bug>{
     
-    /**
-     * Questions:
-     *  * Do can bugs move 8 spaces over x & y coord?
-     *  * 
-     */
 
     public class BugCoordinates {
         private int xCoord;
@@ -45,10 +38,10 @@ public class Bug implements Comparable<Bug>{
     private int yCoord;
     private int rangeLimit;
     private String gender;
-    private boolean isSquashed;
+    private boolean isAlive;
     
     public Bug() { 
-        this.isSquashed = false;
+        this.isAlive = true;
         setGender();
     }
     
@@ -57,7 +50,7 @@ public class Bug implements Comparable<Bug>{
         this.xCoord = xCoord;
         this.yCoord = yCoord;
         this.rangeLimit = rangeLimit;
-        this.isSquashed = false;
+        this.isAlive = false;
         setGender();
     }
     
@@ -139,11 +132,11 @@ public class Bug implements Comparable<Bug>{
     }
     
     public boolean checkPulse() {
-        return this.isSquashed;
+        return this.isAlive;
     }
     
     public void squashBug() {
-        this.isSquashed = true;
+        this.isAlive = false;
     }
     
     

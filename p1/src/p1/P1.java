@@ -75,6 +75,8 @@ public class P1 {
         BugFarm mcdonaldsFarm = new BugFarm(numOfInitialBugs, numOfBugMoves, 
             XCoordUpperBound, YCoordUpperBound);
         
+        mcdonaldsFarm.initSimulation();
+        
         mcdonaldsFarm.displayBugStats();
 
           
