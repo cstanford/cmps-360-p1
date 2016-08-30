@@ -28,6 +28,20 @@ public class BugFarm {
     private int initialMaleBugs;
     private int initialFemaleBugs;
     private final ArrayList<Bug> bugList;
+    private final SimulationDataWrapper dataWrapper;
+    
+    public class SimulationDataWrapper { 
+        
+        public int numOfInitialBugs;
+        public int initialMaleBugs, initialFemaleBugs;
+        public int totalBugs, totalMaleBugs, totalFemaleBugs;
+        public int totalLivingBugs = 0, totalDeadBugs = 0;
+        public int malesAlive = 0, femalesAlive = 0;
+        public int malesDead = 0, femalesDead = 0;
+        
+        public SimulationDataWrapper() { }
+            
+        }
     
     
     
@@ -39,6 +53,8 @@ public class BugFarm {
         this.xCoordUpperBound = xCoordUpperBound;
         this.yCoordUpperBound = yCoordUpperBound;
         this.bugList = new ArrayList<>();
+        
+        this.dataWrapper = new SimulationDataWrapper();
         
         initBugFarm();
         
@@ -95,6 +111,8 @@ public class BugFarm {
             }
             turnNumber++;
         }
+        
+        collectBugStats();
 
     }
     
@@ -168,7 +186,7 @@ public class BugFarm {
         
     }
     
-    public void displayBugStats() {
+    private void collectBugStats() {
         
         int totalBugs, totalMaleBugs, totalFemaleBugs;
         int totalLivingBugs = 0, totalDeadBugs = 0;
@@ -197,8 +215,22 @@ public class BugFarm {
         totalFemaleBugs = (femalesAlive + femalesDead);
         totalBugs = (totalMaleBugs + totalFemaleBugs);
         
+        
+        dataWrapper.numOfInitialBugs = this.numOfInitialBugs;
+        dataWrapper.initialMaleBugs = this.initialMaleBugs;
+        dataWrapper.initialFemaleBugs = this.initialFemaleBugs;
+        dataWrapper.totalBugs = totalBugs;
+        dataWrapper.totalMaleBugs = totalMaleBugs;
+        dataWrapper.totalFemaleBugs = totalFemaleBugs;
+        dataWrapper.totalLivingBugs = totalLivingBugs;
+        dataWrapper.totalDeadBugs = totalDeadBugs;
+        dataWrapper.malesAlive = malesAlive;
+        dataWrapper.femalesAlive = femalesAlive;
+        dataWrapper.malesDead = malesDead;
+        dataWrapper.femalesDead = femalesDead;
+        
         System.out.print("\n\nBug Farm Stats: ");
-        System.out.print("\nInititial number of Bugs: " + this.numOfInitialBugs);
+        System.out.print("\nInitial number of Bugs: " + this.numOfInitialBugs);
         System.out.print("\nInitial bugs of type male: " + this.initialMaleBugs);
         System.out.print("\nInitial bugs of type female: " + this.initialFemaleBugs);
         
@@ -213,8 +245,11 @@ public class BugFarm {
         System.out.print("\nFemales Alive: " + femalesAlive);
         System.out.print("\nFemales Dead: " + femalesDead);
         System.out.print("\n\n");
-                
- 
+                     
     }
+    
+    public SimulationDataWrapper getBugFarmData() {
+        return this.dataWrapper;
+    }   
 
 }

@@ -2,14 +2,17 @@
 // cxs0290
 // CMPS 360
 // Programming Project : #1
-// Due Date : 8.30.16
+// Due Date : 9.6.16
 // Program Description: (insert description here)
 // Certificate of Authenticity:
 // I certify that the code in the method functions including
-// method function main of this project are entirely my own
+// method function main of dataWrapper project are entirely my own
 // work. 
 
 package p1;
+
+import java.io.PrintWriter;
+import java.io.File;
 
 /**
  *
@@ -77,7 +80,39 @@ public class P1 {
         
         mcdonaldsFarm.initSimulation();
         
-        mcdonaldsFarm.displayBugStats();
+        BugFarm.SimulationDataWrapper dataWrapper = mcdonaldsFarm.getBugFarmData();
+        
+        
+        
+        File reportFile = new File(outputFile);
+        PrintWriter pw = null;
+        
+        try {
+            pw = new PrintWriter(reportFile);
+            
+            pw.print("\n\nBug Farm Stats: ");
+            pw.print("\nInitial number of Bugs: " + dataWrapper.numOfInitialBugs);
+            pw.print("\nInitial bugs of type male: " + dataWrapper.initialMaleBugs);
+            pw.print("\nInitial bugs of type female: " + dataWrapper.initialFemaleBugs);
+
+            pw.print("\n\nAfter simulation results: "); 
+            pw.print("\nTotal Bugs: " + dataWrapper.totalBugs);
+            pw.print("\nAlive Bugs: " + dataWrapper.totalLivingBugs);
+            pw.print("\nDead Bugs: " + dataWrapper.totalDeadBugs);
+            pw.print("\nMale Bugs: " + dataWrapper.totalMaleBugs);
+            pw.print("\nMales Alive: " + dataWrapper.malesAlive);
+            pw.print("\nMales Dead: " + dataWrapper.malesDead);
+            pw.print("\nFemale Bugs: " + dataWrapper.totalFemaleBugs);
+            pw.print("\nFemales Alive: " + dataWrapper.femalesAlive);
+            pw.print("\nFemales Dead: " + dataWrapper.femalesDead);
+            pw.print("\n\n");
+        } catch (Exception e) {
+            pw.println(e);
+        }
+
+        if (pw != null) {
+            pw.close();
+        }
 
           
 
