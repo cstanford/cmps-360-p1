@@ -1,6 +1,8 @@
 
 package p1;
 
+import java.io.PrintWriter;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -28,22 +30,7 @@ public class BugFarm {
     private int initialMaleBugs;
     private int initialFemaleBugs;
     private final ArrayList<Bug> bugList;
-    private final SimulationDataWrapper dataWrapper;
-    
-    public class SimulationDataWrapper { 
-        
-        public int numOfInitialBugs;
-        public int initialMaleBugs, initialFemaleBugs;
-        public int totalBugs, totalMaleBugs, totalFemaleBugs;
-        public int totalLivingBugs = 0, totalDeadBugs = 0;
-        public int malesAlive = 0, femalesAlive = 0;
-        public int malesDead = 0, femalesDead = 0;
-        
-        public SimulationDataWrapper() { }
-            
-        }
-    
-    
+   
     
     public BugFarm(int numOfInitialBugs, int numOfBugMoves, int xCoordUpperBound,
                    int yCoordUpperBound) {
@@ -53,9 +40,7 @@ public class BugFarm {
         this.xCoordUpperBound = xCoordUpperBound;
         this.yCoordUpperBound = yCoordUpperBound;
         this.bugList = new ArrayList<>();
-        
-        this.dataWrapper = new SimulationDataWrapper();
-        
+                
         initBugFarm();
         
     }
@@ -112,8 +97,6 @@ public class BugFarm {
             turnNumber++;
         }
         
-        collectBugStats();
-
     }
     
     private void moveBug(Bug bug) {
@@ -186,7 +169,7 @@ public class BugFarm {
         
     }
     
-    private void collectBugStats() {
+    public void collectBugStats(String outputFile) {
         
         int totalBugs, totalMaleBugs, totalFemaleBugs;
         int totalLivingBugs = 0, totalDeadBugs = 0;
@@ -215,20 +198,6 @@ public class BugFarm {
         totalFemaleBugs = (femalesAlive + femalesDead);
         totalBugs = (totalMaleBugs + totalFemaleBugs);
         
-        
-        dataWrapper.numOfInitialBugs = this.numOfInitialBugs;
-        dataWrapper.initialMaleBugs = this.initialMaleBugs;
-        dataWrapper.initialFemaleBugs = this.initialFemaleBugs;
-        dataWrapper.totalBugs = totalBugs;
-        dataWrapper.totalMaleBugs = totalMaleBugs;
-        dataWrapper.totalFemaleBugs = totalFemaleBugs;
-        dataWrapper.totalLivingBugs = totalLivingBugs;
-        dataWrapper.totalDeadBugs = totalDeadBugs;
-        dataWrapper.malesAlive = malesAlive;
-        dataWrapper.femalesAlive = femalesAlive;
-        dataWrapper.malesDead = malesDead;
-        dataWrapper.femalesDead = femalesDead;
-        
         System.out.print("\n\nBug Farm Stats: ");
         System.out.print("\nInitial number of Bugs: " + this.numOfInitialBugs);
         System.out.print("\nInitial bugs of type male: " + this.initialMaleBugs);
@@ -245,11 +214,35 @@ public class BugFarm {
         System.out.print("\nFemales Alive: " + femalesAlive);
         System.out.print("\nFemales Dead: " + femalesDead);
         System.out.print("\n\n");
+        
+        File reportFile = new File(outputFile);
+        PrintWriter pw = null;
+                
+        try {
+            pw = new PrintWriter(outputFile);
+            
+            pw.print("\n\nBug Farm Stats: ");
+            pw.print("\nInitial number of Bugs: " + this.numOfInitialBugs);
+            pw.print("\nInitial bugs of type male: " + this.initialMaleBugs);
+            pw.print("\nInitial bugs of type female: " + this.initialFemaleBugs);
+
+            pw.print("\n\nAfter simulation results: "); 
+            pw.print("\nTotal Bugs: " + totalBugs);
+            pw.print("\nAlive Bugs: " + totalLivingBugs);
+            pw.print("\nDead Bugs: " + totalDeadBugs);
+            pw.print("\nMale Bugs: " + totalMaleBugs);
+            pw.print("\nMales Alive: " + malesAlive);
+            pw.print("\nMales Dead: " + malesDead);
+            pw.print("\nFemale Bugs: " + totalFemaleBugs);
+            pw.print("\nFemales Alive: " + femalesAlive);
+            pw.print("\nFemales Dead: " + femalesDead);
+            pw.print("\n\n");
+        } catch (Exception e) {
+            pw.println(e);
+        }
+        pw.close();
+
                      
     }
     
-    public SimulationDataWrapper getBugFarmData() {
-        return this.dataWrapper;
-    }   
-
 }

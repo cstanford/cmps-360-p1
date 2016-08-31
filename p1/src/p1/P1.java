@@ -11,9 +11,6 @@
 
 package p1;
 
-import java.io.PrintWriter;
-import java.io.File;
-
 /**
  *
  * @author cxs0290
@@ -53,69 +50,12 @@ public class P1 {
         String outputFile = scanner.next();
         
         
-        Bug b1 = new Bug();
-        Bug b2 = new Bug();
-        Bug b3 = new Bug();
-        
-        b1.setBugCoordinates(1, 1);
-        b2.setBugCoordinates(1, 1);
-        b3.setBugCoordinates(2,2);
-        
-        boolean result1 = b1.equals(b2); // true
-        boolean result2 = b1.equals(b3); // false
-        
-        System.out.print("b1 == b2: " + result1 + "\n"); // true
-        System.out.print("b1 == b3: " + result2 + "\n"); // false
-        
-        int result3 = b1.compareTo(b2); // 0
-        int result4 = b3.compareTo(b2); // 1
-        int result5 = b1.compareTo(b3); // -1 
-        
-        System.out.print("Should be 0: " + result3 + "\n"); 
-        System.out.print("Should be 1: " + result4 + "\n");        
-        System.out.print("Should be -1: " + result5 + "\n"); 
-        
         BugFarm mcdonaldsFarm = new BugFarm(numOfInitialBugs, numOfBugMoves, 
             XCoordUpperBound, YCoordUpperBound);
         
         mcdonaldsFarm.initSimulation();
-        
-        BugFarm.SimulationDataWrapper dataWrapper = mcdonaldsFarm.getBugFarmData();
-        
-        
-        
-        File reportFile = new File(outputFile);
-        PrintWriter pw = null;
-        
-        try {
-            pw = new PrintWriter(reportFile);
-            
-            pw.print("\n\nBug Farm Stats: ");
-            pw.print("\nInitial number of Bugs: " + dataWrapper.numOfInitialBugs);
-            pw.print("\nInitial bugs of type male: " + dataWrapper.initialMaleBugs);
-            pw.print("\nInitial bugs of type female: " + dataWrapper.initialFemaleBugs);
-
-            pw.print("\n\nAfter simulation results: "); 
-            pw.print("\nTotal Bugs: " + dataWrapper.totalBugs);
-            pw.print("\nAlive Bugs: " + dataWrapper.totalLivingBugs);
-            pw.print("\nDead Bugs: " + dataWrapper.totalDeadBugs);
-            pw.print("\nMale Bugs: " + dataWrapper.totalMaleBugs);
-            pw.print("\nMales Alive: " + dataWrapper.malesAlive);
-            pw.print("\nMales Dead: " + dataWrapper.malesDead);
-            pw.print("\nFemale Bugs: " + dataWrapper.totalFemaleBugs);
-            pw.print("\nFemales Alive: " + dataWrapper.femalesAlive);
-            pw.print("\nFemales Dead: " + dataWrapper.femalesDead);
-            pw.print("\n\n");
-        } catch (Exception e) {
-            pw.println(e);
-        }
-
-        if (pw != null) {
-            pw.close();
-        }
-
-          
-
+        mcdonaldsFarm.collectBugStats(outputFile);
+                  
     }
 
 }
